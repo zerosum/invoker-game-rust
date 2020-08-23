@@ -1,8 +1,6 @@
 [package]
-name = "invoker-game-cli"
+name = "invoker-game-core"
 version = "0.1.0"
 authors = ["zerosum <info@zerosum.dev>"]
 
 [dependencies]
-termion = "1.5.5"
-invoker-game-core = { path = "../core" }

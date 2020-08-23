@@ -1,8 +1,11 @@
 [package]
-name = "invoker-game-cli"
+name = "invoker-game-wasm"
 version = "0.1.0"
 authors = ["zerosum <info@zerosum.dev>"]
 
+[lib]
+crate-type = ["cdylib"]
+
 [dependencies]
-termion = "1.5.5"
+wasm-bindgen = "0.2"
 invoker-game-core = { path = "../core" }
