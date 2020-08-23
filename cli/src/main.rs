@@ -1,13 +1,9 @@
 extern crate invoker_game_core as core;
 extern crate termion as term;
 
-use std::fmt;
-use std::fmt::{Debug, Formatter};
 use std::io::{stdin, Stdin, stdout, Stdout, Write};
-use std::str::Chars;
 
 use term::*;
-use term::color::Color;
 use term::input::TermRead;
 use term::raw::{IntoRawMode, RawTerminal};
 
