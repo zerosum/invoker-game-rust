@@ -1,0 +1,8 @@
+[package]
+name = "invoker_game_core"
+version = "0.1.0"
+authors = ["zerosum <info@zerosum.dev>"]
+edition = "2018"
+
+[dependencies]
+termion = "1.5.5"
