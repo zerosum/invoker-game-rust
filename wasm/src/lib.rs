@@ -39,23 +39,23 @@ pub fn fetch_status() -> JsValue {
         e1: display_element(p.elements[0]),
         e2: display_element(p.elements[1]),
         e3: display_element(p.elements[2]),
-        s1: p.spell1.map_or_else(|| "", display_spell ),
-        s2: p.spell2.map_or_else(|| "", display_spell ),
+        s1: p.spell1.map_or_else(|| "", display_spell),
+        s2: p.spell2.map_or_else(|| "", display_spell),
     };
 
     JsValue::from_serde(&_player).unwrap()
 }
 
 #[wasm_bindgen]
-pub fn update(key_code: u32) {
+pub fn update(key: char) {
     let mut p = ctx::PLAYER.write().unwrap();
-    match key_code {
-        81u32 => p.cast_element(Element::Quas),
-        87u32 => p.cast_element(Element::Wex),
-        69u32 => p.cast_element(Element::Exort),
-        82u32 => p.invoke(),
-        // 68u32 => {}
-        // 80u32 => {}
+    match key {
+        'q' => p.cast_element(Element::Quas),
+        'w' => p.cast_element(Element::Wex),
+        'e' => p.cast_element(Element::Exort),
+        'r' => p.invoke(),
+        // 'd' => {}
+        // 'f' => {}
         _ => {}
     }
 }
