@@ -19,8 +19,15 @@ jobs:
       uses: actions/setup-node@v1.4.3
       with:
         node-version: 14.x
+    
     - run: |
         wasm-pack build ./wasm
         cd ./site
         npm install
         npm run build
+    
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./site/build
