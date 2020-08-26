@@ -2,6 +2,7 @@
   "name": "site",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "game": "file:../wasm/pkg",
     "react": "^16.13.1",
