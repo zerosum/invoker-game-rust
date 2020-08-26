@@ -23,13 +23,15 @@ dependencies = [
 [[package]]
 name = "invoker-game-core"
 version = "0.1.0"
+dependencies = [
+ "lazy_static",
+]
 
 [[package]]
 name = "invoker-game-wasm"
 version = "0.1.0-SNAPSHOT"
 dependencies = [
  "invoker-game-core",
- "lazy_static",
  "serde",
  "wasm-bindgen",
 ]

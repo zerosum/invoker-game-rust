@@ -1,6 +1,4 @@
 extern crate invoker_game_core as core;
-#[macro_use]
-extern crate lazy_static;
 extern crate serde;
 extern crate wasm_bindgen;
 
@@ -8,19 +6,7 @@ use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 use core::game::*;
-
-mod ctx {
-    use std::sync::RwLock;
-
-    use core::game::*;
-
-    lazy_static! {
-        pub static ref PLAYER: RwLock<Invoker> = {
-            let p = Invoker::new();
-            RwLock::new(p)
-        };
-    }
-}
+use core::ctx;
 
 #[derive(Serialize, Deserialize)]
 pub struct Player {
@@ -33,7 +19,7 @@ pub struct Player {
 
 #[wasm_bindgen]
 pub fn fetch_status() -> JsValue {
-    let p = ctx::PLAYER.read().unwrap();
+    let p = ctx::player().unwrap();
 
     let _player = Player {
         e1: display_element(p.elements[0]),
@@ -48,16 +34,17 @@ pub fn fetch_status() -> JsValue {
 
 #[wasm_bindgen]
 pub fn update(key: char) {
-    let mut p = ctx::PLAYER.write().unwrap();
-    match key {
-        'q' => p.cast_element(Element::Quas),
-        'w' => p.cast_element(Element::Wex),
-        'e' => p.cast_element(Element::Exort),
-        'r' => p.invoke(),
-        // 'd' => {}
-        // 'f' => {}
-        _ => {}
-    }
+    let input: Input = match key {
+        'q' => Input::E1,
+        'w' => Input::E2,
+        'e' => Input::E3,
+        'r' => Input::Invoke,
+        'd' => Input::S1,
+        'f' => Input::S2,
+        _ => return
+    };
+
+    ctx::cast(input).unwrap()
 }
 
 fn display_element(e: Element) -> char {

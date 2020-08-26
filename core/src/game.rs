@@ -27,6 +27,16 @@ pub struct Invoker {
     pub spell2: Option<Spell>,
 }
 
+#[derive(Eq, PartialEq)]
+pub enum Input {
+    E1,
+    E2,
+    E3,
+    Invoke,
+    S1,
+    S2,
+}
+
 impl Invoker {
     pub fn new() -> Invoker {
         Invoker {
@@ -34,6 +44,12 @@ impl Invoker {
             spell1: None,
             spell2: None,
         }
+    }
+
+    pub fn clear(&mut self) {
+        self.elements = [Element::Void; 3];
+        self.spell1 = None;
+        self.spell2 = None;
     }
 
     pub fn cast_element(&mut self, e: Element) {

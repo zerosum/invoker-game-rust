@@ -7,6 +7,7 @@ use term::*;
 use term::input::TermRead;
 use term::raw::{IntoRawMode, RawTerminal};
 
+use core::ctx;
 use core::game::*;
 
 const LINE_NUM_TOP_SKILLS_AREA: u16 = 3;
@@ -17,24 +18,26 @@ fn main() {
 
     init_display(&mut stdout);
 
-    let mut player = Invoker::new();
-
-    refresh_display(&mut stdout, player);
+    refresh_display(&mut stdout);
 
     use event::Key::*;
     for e in stdin.keys() {
-        match e {
-            Ok(Char('q')) => player.cast_element(Element::Quas),
-            Ok(Char('w')) => player.cast_element(Element::Wex),
-            Ok(Char('e')) => player.cast_element(Element::Exort),
-            Ok(Char('r')) => player.invoke(),
+        let input = match e {
+            Ok(Char('q')) => Input::E1,
+            Ok(Char('w')) => Input::E2,
+            Ok(Char('e')) => Input::E3,
+            Ok(Char('r')) => Input::Invoke,
+            // Ok(Char('d')) => Input::S1,
+            // Ok(Char('f')) => Input::S2,
             Ok(Ctrl('c')) => break,
-            _ => {}
-        }
-        refresh_display(&mut stdout, player)
+            _ => continue
+        };
+
+        ctx::cast(input).unwrap();
+        refresh_display(&mut stdout)
     }
 
-    write!(stdout, "{}", cursor::Show).unwrap();
+    write!(stdout, "{}{}{}",  clear::All, cursor::Show, cursor::Goto(1,1)).unwrap();
 }
 
 fn init_display(stdout: &mut RawTerminal<Stdout>) {
@@ -60,7 +63,9 @@ fn init_display(stdout: &mut RawTerminal<Stdout>) {
     stdout.flush().unwrap();
 }
 
-fn refresh_display(stdout: &mut RawTerminal<Stdout>, player: Invoker) {
+fn refresh_display(stdout: &mut RawTerminal<Stdout>) {
+    let player: Invoker = ctx::player().unwrap();
+
     write!(stdout, "{}{}{}[{}][{}][{}]{}",
            cursor::Goto(1, LINE_NUM_TOP_SKILLS_AREA + 9),
            clear::CurrentLine,
