@@ -14,6 +14,13 @@ jobs:
 
     - name: wasm-pack-action
       uses: jetli/wasm-pack-action@v0.3.0
-    
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v1.4.3
+      with:
+        node-version: 14.x
     - run: |
-        wasm-pack build wasm
+        wasm-pack build ./wasm
+        cd ./site
+        npm install
+        npm run build
