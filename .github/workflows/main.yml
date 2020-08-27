@@ -10,9 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Repo
+      uses: actions/checkout@v2
 
-    - name: wasm-pack-action
+    - name: Setup wasm-pack
       uses: jetli/wasm-pack-action@v0.3.0
 
     - name: Setup Node.js environment
@@ -20,12 +21,30 @@ jobs:
       with:
         node-version: 14.x
     
-    - run: |
+    - name: Cache npm modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-    
+
+    - name: Cache Cargo modules
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}    
+    
+    - name: Build
+      run: |
         wasm-pack build ./wasm
         cd ./site
         npm install
         npm run build
-    
+
     - name: Publish
       uses: netlify/actions/cli@master
       with:
